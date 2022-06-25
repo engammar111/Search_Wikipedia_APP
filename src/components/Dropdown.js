@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Dropdown = (props) => {
+  const [open, setOpen] = useState(false);
+
   const renderedOptions = props.options.map((option) => {
+    if (option.value === props.selected.value) {
+      return null;
+    }
+
     return (
-      <div key={option.value} className="item">
+      <div
+        key={option.value}
+        className="item"
+        onClick={() => props.onSelectedChange(option)}
+      >
         {" "}
         {option.label}
       </div>
@@ -13,10 +23,15 @@ const Dropdown = (props) => {
     <div className="ui form">
       <div className="field">
         <label className="label">Select a color</label>
-        <div className="ui selection dropdown visible active">
+        <div
+          onClick={() => setOpen(!open)}
+          className={`ui selection dropdown ${open ? "visible active" : ""}`}
+        >
           <i className="dropdown icon"></i>
-          <div className="text">Select Color</div>
-          <div className="menu visible transition">{renderedOptions}</div>
+          <div className="text">{props.selected.label}</div>
+          <div className={`menu ${open ? "visible transition" : ""}`}>
+            {renderedOptions}
+          </div>
         </div>
       </div>{" "}
     </div>
